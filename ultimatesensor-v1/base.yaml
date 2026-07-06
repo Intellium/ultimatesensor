@@ -1,5 +1,10 @@
 # UltimateSensor Base Configuration
 # Core device features shared by all V1 variants.
+substitutions:
+  ultimatesensor_software_version: "1.9"
+  log_level: "INFO"
+  scd41_temperature_offset: "0.0"
+  scd41_humidity_offset: "3.0"
 
 # Esphome start
 esphome:
@@ -108,11 +113,15 @@ sensor:
       name: "SCD41 CO2"
       id: scd41_co2
     temperature:
-      name: "SCD41 Temperature"
       id: scd41_temperature
+      name: "SCD41 Temperature"
+      filters:
+        - lambda: return x + ${scd41_temperature_offset};
     humidity:
-      name: "SCD41 Humidity"
       id: scd41_humidity
+      name: "SCD41 Humidity"
+      filters:
+        - lambda: return x + ${scd41_humidity_offset};
     measurement_mode: low_power_periodic
     update_interval: 30s
 
